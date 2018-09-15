@@ -12,7 +12,7 @@ namespace RosterManagement
         {
             _roster = new Dictionary<int, List<String>>();
         }
-        
+
         /// <summary>
         /// Should be able to Add Student to a Particular Wave
         /// </summary>
@@ -20,6 +20,16 @@ namespace RosterManagement
         /// <param name="wave">Refers to the Wave number</param>
         public void Add(string cadet, int wave)
         {
+            List<string> Name = new List<string>();
+            if (!_roster.ContainsKey(wave))
+            {
+                Name.Add(cadet);
+                _roster.Add(wave, Name);
+            }
+            else
+            {
+                _roster[wave].Add(cadet);
+            }
         }
 
         /// <summary>
@@ -29,8 +39,16 @@ namespace RosterManagement
         /// <returns>List of Cadet's Name</returns>
         public List<string> Grade(int wave)
         {
+            if(!_roster.ContainsKey(wave))
+            {
             var list = new List<string>();
             return list;
+            }
+            else
+            {
+            _roster[wave].Sort();
+            return _roster[wave];
+            }
         }
 
         /// <summary>
@@ -40,6 +58,13 @@ namespace RosterManagement
         public List<string> Roster()
         {
             var cadets = new List<string>();
+            var listkey = _roster.Keys.ToList();
+            listkey.Sort();
+            foreach(int x in listkey)
+            {
+                _roster[x].Sort();
+                cadets.AddRange(_roster[x]);
+            }
             return cadets;
         }
     }
